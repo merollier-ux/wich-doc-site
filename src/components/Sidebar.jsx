@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ChefHat, Menu, X, Lock, ShoppingBag, UserCircle } from 'lucide-react';
+import { ChefHat, Menu, X, Lock, ShoppingBag, UserCircle, Utensils, Star } from 'lucide-react';
 import { useAuth } from '../context/Authcontext';
 import { SOCIALS } from '../data';
 
@@ -19,6 +19,12 @@ const Sidebar = () => {
         { path: '/about',  label: 'About Us' },
         { path: '/blog',   label: 'Lab Journal' },
         ...(userProfile?.isMember ? [{ path: '/recipes', label: 'Rx Vault' }] : []),
+    ];
+
+    const incomeLinks = [
+        { path: '/order',    label: 'Order Online', icon: ShoppingBag },
+        { path: '/shop',     label: 'Shop',          icon: Star },
+        { path: '/catering', label: 'Catering',      icon: Utensils },
     ];
 
     return (
@@ -77,23 +83,32 @@ const Sidebar = () => {
                         </Link>
                     ))}
 
-                    {/* Order section */}
+                    {/* Income / Commerce section */}
                     <div className="pt-5 pb-2">
                         <div className="border-t border-dashed border-[#c05621]/20 mb-4" />
                         <p className="text-[9px] uppercase tracking-widest text-[#f4ebd0]/30 px-3 pb-2 flex items-center gap-2">
-                            <ShoppingBag size={9} /> Order
+                            <ShoppingBag size={9} /> Commerce
                         </p>
                     </div>
 
-                    <a
-                        href={SOCIALS.order}
-                        target="_blank"
-                        rel="noreferrer"
-                        onClick={close}
-                        className="flex items-center gap-2 px-3 py-3 rounded font-bold uppercase text-xs tracking-widest text-[#f4ebd0]/70 hover:text-[#f4ebd0] hover:bg-[#f4ebd0]/5 transition-colors"
-                    >
-                        <Lock size={11} /> Order Bread
-                    </a>
+                    {incomeLinks.map(link => {
+                        const Icon = link.icon;
+                        return (
+                            <Link
+                                key={link.path}
+                                to={link.path}
+                                onClick={close}
+                                className={`flex items-center gap-2 px-3 py-3 rounded font-bold uppercase text-xs tracking-widest transition-colors ${
+                                    isActive(link.path)
+                                        ? 'bg-[#c05621]/20 text-[#c05621] flame-1'
+                                        : 'text-[#f4ebd0]/70 hover:text-[#f4ebd0] hover:bg-[#f4ebd0]/5'
+                                }`}
+                            >
+                                <Icon size={11} /> {link.label}
+                            </Link>
+                        );
+                    })}
+
                     <a
                         href={SOCIALS.membership}
                         target="_blank"

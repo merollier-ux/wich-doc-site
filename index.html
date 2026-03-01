@@ -2,12 +2,30 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/png" href="/logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#1a110d" />
+    <meta name="description" content="Artisan sandwiches, fresh-baked breads, exclusive recipes, and online ordering from The Wich Doc — Parksville, BC." />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Wich Doc" />
+    <link rel="apple-touch-icon" href="/logo.png" />
     <title>The 'Wich Doc | Artisan Bakery & Sandwich Shop</title>
   </head>
   <body>
     <div id="root"></div>
+    <!-- Netlify Forms detection -->
+    <form name="catering" netlify netlify-honeypot="bot-field" hidden>
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <input type="tel" name="phone" />
+      <input type="date" name="date" />
+      <input type="number" name="guests" />
+      <input type="text" name="eventType" />
+      <input type="text" name="location" />
+      <input type="text" name="menuOptions" />
+      <textarea name="notes"></textarea>
+    </form>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
