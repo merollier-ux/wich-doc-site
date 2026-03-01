@@ -1,6 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
+import Sidebar from './components/Sidebar';
 import Footer from './components/Footer';
 import ErrorBoundary from './components/ErrorBoundary';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -23,8 +23,8 @@ const PageLoader = () => (
 
 const WithLayout = ({ children }) => (
     <div className="flex flex-col min-h-screen">
-        <Navbar />
-        <main className="flex-grow">
+        <Sidebar />
+        <main className="flex-grow pt-16">
             <Suspense fallback={<PageLoader />}>
                 {children}
             </Suspense>
