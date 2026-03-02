@@ -121,8 +121,7 @@ const Clinic = () => {
             // Clean markdown code blocks if present
             const cleanText = text.replace(/```json/g, '').replace(/```/g, '').trim();
             setPrescription(JSON.parse(cleanText));
-        } catch (err) {
-            console.error(err);
+        } catch {
             alert("Consultation temporarily unavailable. Please try again.");
         } finally {
             setIsDiagnosing(false);
@@ -140,8 +139,7 @@ const Clinic = () => {
             const text = await callAI(prompt);
             const cleanText = text.replace(/```json/g, '').replace(/```/g, '').trim();
             setTrialResult(JSON.parse(cleanText));
-        } catch (err) {
-            console.error(err);
+        } catch {
             alert("Lab temporarily offline. Please try again.");
         } finally {
             setIsDeveloping(false);

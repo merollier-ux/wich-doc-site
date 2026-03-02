@@ -82,6 +82,12 @@ const CheckoutModal = () => {
             }
             setStatus('success');
             clearCart();
+            // Fire confirmation email — non-blocking, failure is silent
+            fetch('/.netlify/functions/send-order-email', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ customerEmail: email, customerName: name, items: cartItems, totalCents: cartTotal }),
+            }).catch(() => {});
         } catch {
             setStatus('error');
             setErrorMsg('Network error. Please check your connection and try again.');
