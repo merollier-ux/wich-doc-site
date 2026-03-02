@@ -33,6 +33,33 @@ const PRICES = {
 const Order = () => {
     const [cart, setCart] = useState({});
     const [showCart, setShowCart] = useState(false);
+    const [checkoutLoading, setCheckoutLoading] = useState(false);
+
+    const handleCheckout = async () => {
+        setCheckoutLoading(true);
+        try {
+            const items = Object.entries(cart).map(([name, quantity]) => ({
+                name,
+                price: PRICES[name] || 0,
+                quantity,
+            }));
+            const res = await fetch('/.netlify/functions/square-checkout', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ items }),
+            });
+            const data = await res.json();
+            if (!res.ok) {
+                alert('Checkout error: ' + (data.error || 'Please try again.'));
+                return;
+            }
+            window.location.href = data.url;
+        } catch {
+            alert('Could not reach checkout. Please try again or call us directly.');
+        } finally {
+            setCheckoutLoading(false);
+        }
+    };
 
     const cartCount = Object.values(cart).reduce((sum, qty) => sum + qty, 0);
     const cartTotal = Object.entries(cart).reduce((sum, [name, qty]) => sum + (PRICES[name] || 0) * qty, 0);
@@ -162,14 +189,13 @@ const Order = () => {
                         </button>
                         <div className="flex items-center gap-3">
                             <span className="text-[#f4ebd0] font-bold text-lg">${cartTotal.toFixed(2)}</span>
-                            <a
-                                href={SOCIALS.order}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="flex items-center gap-2 px-6 py-3 bg-[#c05621] text-white font-bold uppercase tracking-widest text-xs rounded hover:bg-[#a84615] transition-colors flame-2"
+                            <button
+                                onClick={handleCheckout}
+                                disabled={checkoutLoading}
+                                className="flex items-center gap-2 px-6 py-3 bg-[#c05621] text-white font-bold uppercase tracking-widest text-xs rounded hover:bg-[#a84615] transition-colors flame-2 disabled:opacity-60 disabled:cursor-wait"
                             >
-                                Checkout <ArrowRight size={14} />
-                            </a>
+                                {checkoutLoading ? 'Loading…' : <><span>Checkout</span> <ArrowRight size={14} /></>}
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -236,14 +262,16 @@ const Order = () => {
                             <p className="text-[10px] text-[#1a110d]/50 leading-relaxed">
                                 Final total confirmed at checkout. Taxes and any add-ons applied on Square.
                             </p>
-                            <a
-                                href={SOCIALS.order}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="flex items-center justify-center gap-2 w-full py-4 bg-[#c05621] text-white font-bold uppercase tracking-widest text-sm rounded-xl hover:bg-[#a84615] transition-colors flame-2"
+                            <button
+                                onClick={handleCheckout}
+                                disabled={checkoutLoading}
+                                className="flex items-center justify-center gap-2 w-full py-4 bg-[#c05621] text-white font-bold uppercase tracking-widest text-sm rounded-xl hover:bg-[#a84615] transition-colors flame-2 disabled:opacity-60 disabled:cursor-wait"
                             >
-                                <ShoppingCart size={16} /> Proceed to Square <ArrowRight size={14} />
-                            </a>
+                                {checkoutLoading
+                                    ? 'Connecting to Square…'
+                                    : <><ShoppingCart size={16} /> Proceed to Square <ArrowRight size={14} /></>
+                                }
+                            </button>
                             <button
                                 onClick={clearCart}
                                 className="w-full text-center text-xs text-[#1a110d]/40 hover:text-red-500 transition-colors uppercase tracking-widest"
