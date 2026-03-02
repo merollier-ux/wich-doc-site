@@ -5,7 +5,7 @@ const PICKUP_INFO = [
     { icon: MapPin,  label: 'Location', value: 'Parksville, BC' },
     { icon: Clock,   label: 'Hours',    value: 'Wed – Sat, 11am – 3pm' },
     { icon: Clock,   label: 'Lead Time',value: '24-hour advance order recommended' },
-    { icon: Phone,   label: 'Phone',    value: '(250) 000-0000' },
+    { icon: Phone,   label: 'Phone',    value: '672-922-0970' },
 ];
 
 const Order = () => (

@@ -129,7 +129,7 @@ const CateringForm = () => {
                                 <input name="email" type="email" required placeholder="your@email.com" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} className="input-field" />
                             </Field>
                             <Field label="Phone" icon={<Phone size={13} />}>
-                                <input name="phone" type="tel" placeholder="+1 (250) 000-0000" value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} className="input-field" />
+                                <input name="phone" type="tel" placeholder="672-922-0970" value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} className="input-field" />
                             </Field>
                             <Field label="Number of Guests" icon={<Users size={13} />} required>
                                 <input name="guests" type="number" min="10" required placeholder="e.g. 50" value={form.guests} onChange={e => setForm(f => ({ ...f, guests: e.target.value }))} className="input-field" />
