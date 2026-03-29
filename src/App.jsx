@@ -7,8 +7,9 @@ import CartOverlay from './components/CartOverlay';
 import ErrorBoundary from './components/ErrorBoundary';
 import ProtectedRoute from './components/ProtectedRoute';
 import InstallPrompt from './components/InstallPrompt';
-import Links from './pages/Links'; // eager — critical first render
-import Portal from './pages/Portal'; // eager — auth-critical
+import FirstTimeBanner from './components/FirstTimeBanner';
+import Links from './pages/Links';
+import Portal from './pages/Portal';
 
 const Home            = lazy(() => import('./pages/Home'));
 const Menu            = lazy(() => import('./pages/Menu'));
@@ -35,7 +36,7 @@ const WithLayout = ({ children }) => {
             <Header onOpenSidebar={() => setSidebarOpen(true)} />
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
             <CartOverlay />
-            <main className="flex-grow pt-16">
+            <main className="flex-grow pt-16 pb-16">
                 <Suspense fallback={<PageLoader />}>
                     {children}
                 </Suspense>
@@ -63,6 +64,7 @@ function App() {
                     <Route path="/order"     element={<WithLayout><Order /></WithLayout>} />
                     <Route path="/catering"  element={<WithLayout><Catering /></WithLayout>} />
                 </Routes>
+                <FirstTimeBanner />
                 <InstallPrompt />
             </ErrorBoundary>
         </Router>

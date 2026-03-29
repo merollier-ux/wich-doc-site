@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ShoppingBag, Download, Gift, Star, Package, ChefHat, BookOpen, Sparkles, ExternalLink } from 'lucide-react';
 import { SOCIALS } from '../data';
+import SubscriptionCard from '../components/SubscriptionCard';
 
 const DIGITAL_PRODUCTS = [
     {
@@ -203,17 +204,31 @@ const Shop = () => {
 
                 {/* Digital Products */}
                 {activeTab === 'digital' && (
-                    <div>
-                        <div className="text-center mb-10">
-                            <h2 className="text-2xl font-bold text-[#1a110d] uppercase tracking-tighter">Digital Downloads</h2>
-                            <p className="text-sm text-[#1a110d]/60 mt-2">Buy once, keep forever. Instant delivery to your inbox.</p>
+                    <div className="space-y-12">
+                        {/* Subscription — top of digital tab, it's live right now */}
+                        <div>
+                            <div className="flex items-center gap-4 mb-6">
+                                <div className="h-px flex-1 bg-[#1a110d]/10" />
+                                <p className="text-[10px] font-bold uppercase tracking-widest text-[#c05621] flame-1">Available Now</p>
+                                <div className="h-px flex-1 bg-[#1a110d]/10" />
+                            </div>
+                            <SubscriptionCard variant="full" />
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            {DIGITAL_PRODUCTS.map(p => <ProductCard key={p.id} product={p} />)}
+
+                        {/* Digital downloads */}
+                        <div>
+                            <div className="flex items-center gap-4 mb-6">
+                                <div className="h-px flex-1 bg-[#1a110d]/10" />
+                                <p className="text-[10px] font-bold uppercase tracking-widest text-[#1a110d]/40">Coming Soon</p>
+                                <div className="h-px flex-1 bg-[#1a110d]/10" />
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                {DIGITAL_PRODUCTS.map(p => <ProductCard key={p.id} product={p} />)}
+                            </div>
                         </div>
 
                         {/* Membership upsell */}
-                        <div className="mt-12 bg-[#152238] bg-denim-patch border-4 border-[#c05621] rounded-3xl p-8 text-center text-[#f4ebd0]">
+                        <div className="bg-[#152238] bg-denim-patch border-4 border-[#c05621] rounded-3xl p-8 text-center text-[#f4ebd0]">
                             <Star size={24} className="text-[#c05621] flame-1 mx-auto mb-3" />
                             <h3 className="text-xl font-bold uppercase tracking-widest mb-2">Get Everything with a Membership</h3>
                             <p className="text-sm text-[#f4ebd0]/70 max-w-md mx-auto mb-6">
@@ -247,7 +262,7 @@ const Shop = () => {
                     </div>
                 )}
 
-                {/* Chef's Picks / Affiliate */}
+                {/* Chef's Picks */}
                 {activeTab === 'tools' && (
                     <div>
                         <div className="text-center mb-10">
@@ -276,7 +291,7 @@ const Shop = () => {
                             ))}
                         </div>
                         <p className="text-center text-xs text-[#1a110d]/30 mt-8 max-w-md mx-auto">
-                            Some links may be affiliate links. We only recommend products we genuinely use. Purchasing through these links supports The Wich Doc at no extra cost to you.
+                            Some links may be affiliate links. We only recommend products we genuinely use.
                         </p>
                     </div>
                 )}

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { AlertTriangle, Plus } from 'lucide-react';
 import SmartImage from '../components/SmartImage';
+import SubscriptionCard from '../components/SubscriptionCard';
 import { menuData } from '../data';
 import { useCart } from '../context/CartContext';
 
@@ -32,6 +33,7 @@ const Menu = () => {
         catalogItems.find(c => normalize(c.name) === normalize(name));
 
     const isComingSoon = COMING_SOON_CATS.has(activeCategory);
+    const showSubscription = activeCategory === 'breads';
 
     return (
         <section className="py-20 px-4 max-w-5xl mx-auto animate-in texture-burlap min-h-screen">
@@ -64,7 +66,7 @@ const Menu = () => {
             )}
 
             {/* Menu Grid */}
-            <div className="grid md:grid-cols-2 gap-8 mb-16">
+            <div className="grid md:grid-cols-2 gap-8 mb-12">
                 {menuData[activeCategory].map((item, index) => {
                     const catalogItem = !isComingSoon ? findCatalogItem(item.name) : null;
                     const variation = catalogItem?.variations?.[0];
@@ -76,7 +78,7 @@ const Menu = () => {
                             <div className="flex justify-between items-start mb-2">
                                 <div>
                                     <h3 className="text-xl font-bold text-[#1a110d] font-serif">{item.name}</h3>
-                                    <p className="text-[#c05621] font-bold text-xs uppercase tracking-wide animate-flame">{item.subtitle}</p>
+                                    <p className="text-[#c05621] font-bold text-xs uppercase tracking-wide">{item.subtitle}</p>
                                 </div>
                                 {item.tag && (
                                     <span className="text-[10px] bg-[#1a110d] text-[#f4ebd0] px-2 py-1 uppercase tracking-widest font-bold shrink-0 ml-2">
@@ -108,8 +110,20 @@ const Menu = () => {
                 })}
             </div>
 
+            {/* Subscription Card — breads only */}
+            {showSubscription && (
+                <div className="mb-12">
+                    <div className="flex items-center gap-4 mb-6">
+                        <div className="h-px flex-1 bg-[#1a110d]/10" />
+                        <p className="text-[10px] font-bold uppercase tracking-widest text-[#1a110d]/40">Can't pick just one?</p>
+                        <div className="h-px flex-1 bg-[#1a110d]/10" />
+                    </div>
+                    <SubscriptionCard variant="compact" />
+                </div>
+            )}
+
             {/* Visual Evidence */}
-            <div className="mt-12 flex justify-center">
+            <div className="mt-4 flex justify-center">
                 <div className="w-full max-w-2xl text-center">
                     <h3 className="font-bold text-[#1a110d] uppercase tracking-widest text-xs mb-6 flex items-center justify-center gap-4">
                         <span className="h-px w-12 bg-[#1a110d]/30" />

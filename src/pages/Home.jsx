@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Stethoscope, Sparkles, Camera } from 'lucide-react';
 import SmartImage from '../components/SmartImage';
+import SubscriptionCard from '../components/SubscriptionCard';
 import { callAI } from '../services/gemini';
 
 const Home = () => {
@@ -56,6 +57,19 @@ const Home = () => {
                 <p className="text-2xl font-serif italic min-h-[4rem] max-w-3xl mx-auto">
                     "{dailyDose || "A sandwich a day keeps the hunger away."}"
                 </p>
+            </section>
+
+            {/* Weekly Bread Subscription */}
+            <section className="py-16 px-4 max-w-4xl mx-auto">
+                <div className="text-center mb-8">
+                    <h2 className="text-3xl font-bold text-[#1a110d] uppercase tracking-tighter">
+                        Never Run Out of Good Bread
+                    </h2>
+                    <p className="text-[#1a110d]/60 text-sm mt-2 max-w-md mx-auto">
+                        A weekly rotation of three loaves, baked fresh and ready for pickup at Island Roots every Wednesday.
+                    </p>
+                </div>
+                <SubscriptionCard variant="full" />
             </section>
 
             {/* Recent Procedures Grid */}
