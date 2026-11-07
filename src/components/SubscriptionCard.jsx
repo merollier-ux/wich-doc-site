@@ -1,14 +1,7 @@
 import { Wheat, RefreshCw, ShoppingCart, Check } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { SUBSCRIPTION_ITEM } from '../promo';
 
-// Fake variation ID — replaced with real Square subscription product ID once wired
-export const SUBSCRIPTION_ITEM = {
-    id: 'sub_weekly_bread',
-    variationId: 'sub_weekly_bread_v1',
-    name: 'Weekly Bread Subscription — 3 Loaves',
-    priceCents: 3000,
-    isSubscription: true,
-};
 
 const LOAVES = [
     'Red Fife & Cheddar Farmer\'s Loaf',

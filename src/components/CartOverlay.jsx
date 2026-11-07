@@ -5,7 +5,7 @@ import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/Authcontext';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase';
-import { DISCOUNT_CODE, DISCOUNT_PCT } from './FirstTimeBanner';
+import { DISCOUNT_CODE, DISCOUNT_PCT } from '../promo';
 
 const fmt = (cents) => `$${(cents / 100).toFixed(2)}`;
 
@@ -100,18 +100,17 @@ const CheckoutModal = () => {
                 return;
             }
 
-            const hasSubscription = cartItems.some(i => i.isSubscription);
-            const note = [
-                cartItems.map(i => `${i.qty}x ${i.name}`).join(', '),
-                `| ${name} <${email}>`,
-                discountApplied ? `| Discount: ${DISCOUNT_CODE} (-${DISCOUNT_PCT}%)` : '',
-                hasSubscription ? '| INCLUDES SUBSCRIPTION' : '',
-            ].filter(Boolean).join(' ');
-
+            // Only send what was ordered — the server looks up prices and totals.
             const resp = await fetch('/.netlify/functions/square-payment', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ nonce: result.token, amountCents: finalTotal, note }),
+                body: JSON.stringify({
+                    nonce: result.token,
+                    items: cartItems.map(i => ({ variationId: i.variationId, qty: i.qty })),
+                    discountCode: discountApplied ? DISCOUNT_CODE : undefined,
+                    name,
+                    email,
+                }),
             });
             const data = await resp.json();
             if (!resp.ok) {
@@ -133,18 +132,6 @@ const CheckoutModal = () => {
 
             setStatus('success');
             clearCart();
-
-            // Fire confirmation email — non-blocking
-            fetch('/.netlify/functions/send-order-email', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    customerEmail: email,
-                    customerName: name,
-                    items: cartItems,
-                    totalCents: finalTotal,
-                }),
-            }).catch(() => {});
         } catch {
             setStatus('error');
             setErrorMsg('Network error. Please check your connection and try again.');

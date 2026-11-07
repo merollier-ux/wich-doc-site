@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
 import { X, Tag } from 'lucide-react';
 import { useAuth } from '../context/Authcontext';
+import { DISCOUNT_CODE, DISCOUNT_PCT } from '../promo';
 
-const DISCOUNT_CODE = 'FIRSTRX';
-const DISCOUNT_PCT = 15;
 
 const FirstTimeBanner = () => {
     const { user, userProfile } = useAuth();
@@ -54,5 +53,4 @@ const FirstTimeBanner = () => {
     );
 };
 
-export { DISCOUNT_CODE, DISCOUNT_PCT };
 export default FirstTimeBanner;

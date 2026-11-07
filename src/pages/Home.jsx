@@ -13,7 +13,7 @@ const Home = () => {
     const getDailyDose = async () => {
         setIsLoadingDose(true);
         try {
-            const advice = await callAI("Give me a short, witty medical-themed advice about eating sandwiches or bread. Max 1 sentence. Reply with only the sentence — no quotes, no extra text.");
+            const advice = await callAI('dose');
             setDailyDose(advice);
         } catch (err) {
             setDailyDose("A sandwich a day keeps the hunger away.");

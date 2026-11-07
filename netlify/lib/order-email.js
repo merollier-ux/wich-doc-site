@@ -1,24 +1,21 @@
-export const handler = async (event) => {
-    if (event.httpMethod !== 'POST') return { statusCode: 405 };
+// Order confirmation email. Called only from square-payment after Square has
+// accepted the payment, so every value here comes from the real order.
+const escapeHtml = (v) => String(v ?? '').replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+}[c]));
 
-    const { customerEmail, customerName, items, totalCents } = JSON.parse(event.body ?? '{}');
-    if (!customerEmail || !items?.length) {
-        return { statusCode: 400, body: JSON.stringify({ error: 'Missing required fields' }) };
-    }
-
+// items: [{ name, qty, totalCents }]
+export const sendOrderEmail = async ({ customerEmail, customerName, items, totalCents }) => {
     const apiKey = process.env.RESEND_API_KEY;
-    if (!apiKey) {
-        // Silently skip — email not configured yet
-        return { statusCode: 200, body: JSON.stringify({ skipped: true }) };
-    }
+    if (!apiKey || !customerEmail || !items?.length) return { skipped: true };
 
     const fmt = (cents) => `$${(cents / 100).toFixed(2)}`;
 
     const itemRows = items
         .map(i => `
             <tr>
-                <td style="padding:8px 0;border-bottom:1px dashed #e5d5b0;color:#1a110d;font-size:14px;">${i.qty}× ${i.name}</td>
-                <td style="padding:8px 0;border-bottom:1px dashed #e5d5b0;color:#c05621;font-size:14px;text-align:right;font-weight:bold;">${fmt(i.priceCents * i.qty)}</td>
+                <td style="padding:8px 0;border-bottom:1px dashed #e5d5b0;color:#1a110d;font-size:14px;">${i.qty}× ${escapeHtml(i.name)}</td>
+                <td style="padding:8px 0;border-bottom:1px dashed #e5d5b0;color:#c05621;font-size:14px;text-align:right;font-weight:bold;">${fmt(i.totalCents)}</td>
             </tr>`)
         .join('');
 
@@ -42,7 +39,7 @@ export const handler = async (event) => {
         <!-- Body -->
         <tr>
           <td style="background:#ffffff;padding:32px;border-left:4px solid #1a110d;border-right:4px solid #1a110d;">
-            <p style="margin:0 0 20px;color:#1a110d;font-size:15px;">Hi ${customerName},</p>
+            <p style="margin:0 0 20px;color:#1a110d;font-size:15px;">Hi ${escapeHtml(customerName)},</p>
             <p style="margin:0 0 24px;color:#1a110d;font-size:15px;line-height:1.6;">
               Your prescription has been filled. We'll have your order ready for pickup — we'll reach out if we need anything.
             </p>
@@ -106,9 +103,8 @@ export const handler = async (event) => {
     });
 
     if (!resp.ok) {
-        const err = await resp.json();
-        return { statusCode: 502, body: JSON.stringify({ error: err.message ?? 'Email send failed' }) };
+        const err = await resp.json().catch(() => ({}));
+        throw new Error(err.message ?? `Email send failed (${resp.status})`);
     }
-
-    return { statusCode: 200, body: JSON.stringify({ sent: true }) };
+    return { sent: true };
 };

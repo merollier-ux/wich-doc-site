@@ -8,3 +8,7 @@
   # Security Rules + domain restrictions — not by being secret.
   # Netlify's smart detection incorrectly flags AIza* keys as secrets.
   SECRETS_SCAN_SMART_DETECTION_ENABLED = "false"
+
+[functions]
+  # Bundle shared imports (src/promo.js, src/data.js, netlify/lib/) into each function.
+  node_bundler = "esbuild"

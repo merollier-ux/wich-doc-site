@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Activity, Loader, Clock, AlertTriangle, FlaskConical, TestTube, Sparkles } from 'lucide-react';
 import { callAI } from '../services/gemini';
-import { menuData } from '../data';
 
 // --- Sub-Component: Triage Section ---
 const TriageSection = ({ symptomInput, setSymptomInput, handleConsultation, isDiagnosing, prescription }) => (
@@ -16,7 +15,7 @@ const TriageSection = ({ symptomInput, setSymptomInput, handleConsultation, isDi
         <div className="p-8 flex flex-col gap-8 texture-burlap">
             <form onSubmit={handleConsultation} className="space-y-4">
                 <label className="block text-sm font-bold text-[#152238] uppercase tracking-wide">Patient Complaints</label>
-                <textarea 
+                <textarea maxLength={300}
                     value={symptomInput} 
                     onChange={(e) => setSymptomInput(e.target.value)} 
                     placeholder="Describe your current state... (e.g. 'I'm hangry and need something spicy')" 
@@ -70,7 +69,7 @@ const ResearchSection = ({ trialRequest, setTrialRequest, runClinicalTrial, isDe
                     <p className="text-[#f4ebd0]/70 text-sm">Submit a craving for experimental analysis.</p>
                 </div>
                 <form onSubmit={runClinicalTrial} className="space-y-2">
-                    <textarea value={trialRequest} onChange={(e) => setTrialRequest(e.target.value)} placeholder="e.g. I want something like a donut but spicy..." className="w-full h-32 p-4 rounded-lg border-2 border-[#c05621]/30 focus:border-[#c05621] focus:ring-1 focus:ring-[#c05621] transition-colors resize-none bg-[#152238] text-[#f4ebd0] placeholder-white/30 font-mono text-sm bg-denim-patch" />
+                    <textarea maxLength={300} value={trialRequest} onChange={(e) => setTrialRequest(e.target.value)} placeholder="e.g. I want something like a donut but spicy..." className="w-full h-32 p-4 rounded-lg border-2 border-[#c05621]/30 focus:border-[#c05621] focus:ring-1 focus:ring-[#c05621] transition-colors resize-none bg-[#152238] text-[#f4ebd0] placeholder-white/30 font-mono text-sm bg-denim-patch" />
                     <button type="submit" disabled={isDeveloping || !trialRequest} className="w-full py-4 bg-[#c05621] hover:bg-[#a84615] disabled:bg-[#5d4037] disabled:text-[#f4ebd0]/50 text-white rounded-lg font-bold text-lg shadow-lg transform transition-all active:scale-95 flex items-center justify-center gap-3 border-2 border-[#f4ebd0]/10 flame-2 cursor-pointer">
                         {isDeveloping ? <Loader className="animate-spin" /> : <FlaskConical />}
                         {isDeveloping ? "Synthesizing..." : "Initiate Protocol"}
@@ -114,10 +113,9 @@ const Clinic = () => {
         if (!symptomInput.trim()) return;
         setIsDiagnosing(true); setPrescription(null);
         
-        const prompt = `You are 'The Wich Doc', a witty medical-themed sandwich shop. A patient says: "${symptomInput}". Select exactly ONE item from this menu: ${JSON.stringify(menuData)}. Reply with ONLY a JSON object — no markdown, no extra text — using these fields: dishName (exact menu item name), diagnosis (short humorous medical phrase), reason (one prose sentence explaining why this cures the symptoms), dosage (funny serving instruction like "Two bites every 4 hours").`;
         
         try {
-            const text = await callAI(prompt);
+            const text = await callAI('triage', symptomInput);
             // Clean markdown code blocks if present
             const cleanText = text.replace(/```json/g, '').replace(/```/g, '').trim();
             setPrescription(JSON.parse(cleanText));
@@ -133,10 +131,9 @@ const Clinic = () => {
         if (!trialRequest.trim()) return;
         setIsDeveloping(true); setTrialResult(null);
         
-        const prompt = `You are 'The Wich Doc', a mad scientist of gourmet sandwich craft. A customer craves: "${trialRequest}". Invent a completely original, medical-themed gourmet creation (sandwich, pastry, or dessert). Reply with ONLY a JSON object — no markdown, no extra text — using these fields: name (creative medical-themed dish name), ingredients (a single comma-separated string of 4-6 key ingredients), description (one prose sentence describing the dish's flavors and concept), warning (one funny medical-themed disclaimer sentence).`;
         
         try {
-            const text = await callAI(prompt);
+            const text = await callAI('trial', trialRequest);
             const cleanText = text.replace(/```json/g, '').replace(/```/g, '').trim();
             setTrialResult(JSON.parse(cleanText));
         } catch {

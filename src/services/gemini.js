@@ -1,8 +1,9 @@
-export const callAI = async (prompt) => {
+// mode: 'dose' | 'triage' | 'trial' — prompts live in netlify/functions/claude.js
+export const callAI = async (mode, input = '') => {
     const response = await fetch('/.netlify/functions/claude', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt })
+        body: JSON.stringify({ mode, input })
     });
 
     if (!response.ok) {
