@@ -1,5 +1,5 @@
 import { randomUUID } from 'crypto';
-import { DISCOUNT_CODE, DISCOUNT_PCT, SUBSCRIPTION_ITEM } from '../../src/promo.js';
+import { DISCOUNT_CODE, DISCOUNT_PCT } from '../../src/promo.js';
 import { sendOrderEmail } from '../lib/order-email.js';
 
 const SQUARE_API = 'https://connect.squareup.com/v2';
@@ -12,9 +12,9 @@ const json = (statusCode, body) => ({
     body: JSON.stringify(body),
 });
 
-// The browser only says WHAT to buy. Prices come from the Square catalog (or
-// SUBSCRIPTION_ITEM), and Square computes the total, so a tampered request
-// can't change what the card is charged.
+// The browser only says WHAT to buy. Prices come from the Square catalog and
+// Square computes the total, so a tampered request can't change what the card
+// is charged.
 export const handler = async (event) => {
     if (event.httpMethod !== 'POST') {
         return { statusCode: 405, body: 'Method Not Allowed' };
@@ -39,16 +39,7 @@ export const handler = async (event) => {
         if (typeof variationId !== 'string' || !Number.isInteger(qty) || qty < 1 || qty > MAX_QTY) {
             return json(400, { error: 'Invalid cart item' });
         }
-        if (variationId === SUBSCRIPTION_ITEM.variationId) {
-            lineItems.push({
-                name: SUBSCRIPTION_ITEM.name,
-                quantity: '1',
-                base_price_money: { amount: SUBSCRIPTION_ITEM.priceCents, currency: 'CAD' },
-                note: 'Weekly subscription',
-            });
-        } else {
-            lineItems.push({ catalog_object_id: variationId, quantity: String(qty) });
-        }
+        lineItems.push({ catalog_object_id: variationId, quantity: String(qty) });
     }
 
     const token = process.env.SQUARE_ACCESS_TOKEN;

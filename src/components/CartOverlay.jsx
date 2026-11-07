@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ShoppingCart, Plus, Minus, X, Trash2, CreditCard, CheckCircle, AlertCircle, Tag, RefreshCw } from 'lucide-react';
+import { ShoppingCart, Plus, Minus, X, Trash2, CreditCard, CheckCircle, AlertCircle, Tag } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/Authcontext';
 import { doc, updateDoc } from 'firebase/firestore';
@@ -169,10 +169,7 @@ const CheckoutModal = () => {
                                 <div className="space-y-2">
                                     {cartItems.map(i => (
                                         <div key={i.variationId} className="flex justify-between text-sm text-[#1a110d]">
-                                            <span className="flex items-center gap-1.5">
-                                                {i.isSubscription && <RefreshCw size={11} className="text-[#c05621]" />}
-                                                {i.qty}× {i.name}
-                                            </span>
+                                            <span>{i.qty}× {i.name}</span>
                                             <span className="font-bold">{fmt(i.priceCents * i.qty)}</span>
                                         </div>
                                     ))}
@@ -289,29 +286,17 @@ const CartPanel = () => {
                             {cartItems.map(item => (
                                 <div key={item.variationId} className="flex items-center gap-3 bg-white border-2 border-[#1a110d]/10 rounded-xl p-3">
                                     <div className="flex-1 min-w-0">
-                                        <p className="text-sm font-bold text-[#1a110d] truncate flex items-center gap-1.5">
-                                            {item.isSubscription && <RefreshCw size={11} className="text-[#c05621] shrink-0" />}
-                                            {item.name}
-                                        </p>
-                                        <p className="text-xs text-[#c05621]">{fmt(item.priceCents)} {item.isSubscription ? '/ week' : 'each'}</p>
+                                        <p className="text-sm font-bold text-[#1a110d] truncate">{item.name}</p>
+                                        <p className="text-xs text-[#c05621]">{fmt(item.priceCents)} each</p>
                                     </div>
                                     <div className="flex items-center gap-1 shrink-0">
-                                        {!item.isSubscription && (
-                                            <>
-                                                <button onClick={() => removeItem(item.variationId)} className="w-7 h-7 rounded-full bg-[#1a110d]/10 flex items-center justify-center hover:bg-[#c05621] hover:text-white transition-colors cursor-pointer">
-                                                    {item.qty === 1 ? <Trash2 size={12} /> : <Minus size={12} />}
-                                                </button>
-                                                <span className="w-6 text-center text-sm font-bold text-[#1a110d]">{item.qty}</span>
-                                                <button onClick={() => addItem(item)} className="w-7 h-7 rounded-full bg-[#1a110d]/10 flex items-center justify-center hover:bg-[#c05621] hover:text-white transition-colors cursor-pointer">
-                                                    <Plus size={12} />
-                                                </button>
-                                            </>
-                                        )}
-                                        {item.isSubscription && (
-                                            <button onClick={() => removeItem(item.variationId)} className="w-7 h-7 rounded-full bg-[#1a110d]/10 flex items-center justify-center hover:bg-[#c05621] hover:text-white transition-colors cursor-pointer">
-                                                <Trash2 size={12} />
-                                            </button>
-                                        )}
+                                        <button onClick={() => removeItem(item.variationId)} className="w-7 h-7 rounded-full bg-[#1a110d]/10 flex items-center justify-center hover:bg-[#c05621] hover:text-white transition-colors cursor-pointer">
+                                            {item.qty === 1 ? <Trash2 size={12} /> : <Minus size={12} />}
+                                        </button>
+                                        <span className="w-6 text-center text-sm font-bold text-[#1a110d]">{item.qty}</span>
+                                        <button onClick={() => addItem(item)} className="w-7 h-7 rounded-full bg-[#1a110d]/10 flex items-center justify-center hover:bg-[#c05621] hover:text-white transition-colors cursor-pointer">
+                                            <Plus size={12} />
+                                        </button>
                                     </div>
                                     <span className="text-sm font-bold text-[#1a110d] w-16 text-right shrink-0">{fmt(item.priceCents * item.qty)}</span>
                                 </div>
