@@ -1,0 +1,36 @@
+rules_version = '2';
+
+// Paste into Firebase console → Firestore Database → Rules → Publish.
+// The site only uses users/{uid}. isMember and visits are set by the owner in
+// the Firebase console (which bypasses these rules), never by customers.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /users/{userId} {
+      function isOwner() {
+        return request.auth != null && request.auth.uid == userId;
+      }
+
+      allow read: if isOwner();
+
+      // Sign-up profile: only these fields, and never a member.
+      allow create: if isOwner()
+        && request.resource.data.keys().hasOnly(['displayName', 'email', 'isMember', 'createdAt'])
+        && request.resource.data.isMember == false
+        && request.resource.data.displayName is string
+        && request.resource.data.displayName.size() <= 100
+        && request.resource.data.email is string
+        && request.resource.data.email.size() <= 254
+        && request.resource.data.createdAt == request.time;
+
+      // After checkout the site marks the first purchase; nothing else is editable.
+      allow update: if isOwner()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['firstPurchaseComplete'])
+        && request.resource.data.firstPurchaseComplete == true;
+
+      allow delete: if false;
+    }
+
+    // Everything else is closed.
+  }
+}

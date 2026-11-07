@@ -19,8 +19,14 @@ export const AuthProvider = ({ children }) => {
         const unsubscribe = onAuthStateChanged(auth, async (u) => {
             if (u) {
                 setUser(u);
-                const snap = await getDoc(doc(db, 'users', u.uid));
-                setUserProfile(snap.exists() ? snap.data() : null);
+                try {
+                    const snap = await getDoc(doc(db, 'users', u.uid));
+                    setUserProfile(snap.exists() ? snap.data() : null);
+                } catch (err) {
+                    // Without this, a failed read leaves loading=true and the whole site blank.
+                    console.error('Could not load profile:', err);
+                    setUserProfile(null);
+                }
             } else {
                 setUser(null);
                 setUserProfile(null);
