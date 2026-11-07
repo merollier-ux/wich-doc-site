@@ -6,7 +6,7 @@ const About = () => {
         <div className="animate-in texture-burlap min-h-screen">
             {/* Hero Section with Fixed Background */}
             <div className="relative h-96 w-full overflow-hidden border-b-8 border-[#1a110d]">
-                <SmartImage src="/vancouver-island-bg.png" alt="Vancouver Island Background" className="absolute inset-0 w-full h-full object-cover" />
+                <SmartImage src="/vancouver-island-bg.webp" alt="Vancouver Island Background" className="absolute inset-0 w-full h-full object-cover" />
                 
                 {/* FIXED: Removed texture-wood and used semi-transparent black so image shows */}
                 <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
@@ -33,7 +33,7 @@ const About = () => {
             <section className="py-20 bg-[#f4ebd0]">
                 <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center gap-12">
                     <div className="md:w-1/3 p-2 bg-white border-2 border-dashed border-[#1a110d] shadow-xl transform -rotate-2">
-                        <SmartImage src="/chef.png" alt="Chef Marc" className="w-full aspect-square object-cover" />
+                        <SmartImage src="/chef.webp" alt="Chef Marc" className="w-full aspect-square object-cover" />
                     </div>
                     <div className="md:w-2/3">
                         <h2 className="text-4xl font-bold mb-4 flex items-center gap-3 text-[#1a110d]"><FlaskConical className="text-[#c05621] flame-3" />Meet The Alchemist</h2>

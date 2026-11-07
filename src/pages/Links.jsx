@@ -14,7 +14,7 @@ const Links = () => {
 
                 {/* Logo */}
                 <div className="w-40 h-40 bg-[#f4ebd0] rounded-3xl flex items-center justify-center border-4 border-[#c05621] mx-auto overflow-hidden shadow-2xl relative lantern-container">
-                    <SmartImage src="/logo.png" alt="The Wich Doc Logo" className="w-full h-full object-cover" lazy={false} />
+                    <SmartImage src="/logo.webp" alt="The Wich Doc Logo" className="w-full h-full object-cover" lazy={false} />
                 </div>
 
                 {/* Header */}

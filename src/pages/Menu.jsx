@@ -11,10 +11,10 @@ const normalize = (s) => s.toLowerCase().trim().replace(/[^a-z0-9]/g, '');
 const COMING_SOON_CATS = new Set(['sandwiches', 'sides']);
 
 const categoryImageMap = {
-    sandwiches: '/sandwich1.png',
-    sides: '/sides1.png',
-    desserts: '/dessert1.png',
-    breads: '/bread1.png',
+    sandwiches: '/sandwich1.webp',
+    sides: '/sides1.webp',
+    desserts: '/dessert1.webp',
+    breads: '/bread1.webp',
 };
 
 const Menu = () => {

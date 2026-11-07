@@ -43,7 +43,7 @@ const Home = () => {
                     </div>
                     <div className="md:w-1/2 mt-12 md:mt-0 flex justify-center relative z-10">
                         <div className="relative w-80 h-80 rounded-3xl flex items-center justify-center border-8 border-dashed border-[#f4ebd0]/30 shadow-2xl overflow-hidden bg-[#152238] lantern-container">
-                            <SmartImage src="logo.png" alt="The Wich Doc Logo" className="w-full h-full object-cover" lazy={false} />
+                            <SmartImage src="/logo.webp" alt="The Wich Doc Logo" className="w-full h-full object-cover" lazy={false} />
                         </div>
                     </div>
                 </div>
@@ -81,7 +81,7 @@ const Home = () => {
                     <div className="h-1 w-24 bg-[#c05621] mx-auto mt-4 rounded-full flame-2"></div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {['/food1.png', '/food2.png', '/food3.png'].map((img, i) => (
+                    {['/food1.webp', '/food2.webp', '/food3.webp'].map((img, i) => (
                         <div key={i} className="aspect-square bg-white p-2 border-2 border-dashed border-[#1a110d]/20 shadow-xl transform hover:-translate-y-2 transition-transform duration-500">
                             <div className="w-full h-full overflow-hidden">
                                 <SmartImage className="w-full h-full object-cover" src={img} alt={`Procedure ${i + 1}`} />

@@ -24,8 +24,8 @@ export default defineConfig({
           { src: 'logo.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' },
         ],
         screenshots: [
-          { src: 'food1.PNG', sizes: '1280x720', type: 'image/png', form_factor: 'wide', label: 'The Wich Doc Menu' },
-          { src: 'food2.PNG', sizes: '640x1136', type: 'image/png', form_factor: 'narrow', label: 'The Wich Doc on Mobile' },
+          { src: 'food1.webp', sizes: '1184x1200', type: 'image/webp', form_factor: 'wide', label: 'The Wich Doc Menu' },
+          { src: 'food2.webp', sizes: '1200x717', type: 'image/webp', form_factor: 'narrow', label: 'The Wich Doc on Mobile' },
         ],
         shortcuts: [
           { name: 'Order Now', short_name: 'Order', url: '/order', icons: [{ src: 'logo.png', sizes: '96x96' }] },

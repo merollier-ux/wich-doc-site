@@ -92,6 +92,25 @@ h1, h2, h3, h4, h5, h6 {
   50% { box-shadow: 0 0 30px rgba(192, 86, 33, 0.4); }
 }
 
+/* Phones: the scrolling wood texture and filter-based flicker repaint every
+   frame, which makes mobile browsers stutter. Keep the look, drop the cost. */
+@keyframes flame-flicker-lite {
+  0%, 100% { opacity: 1; }
+  30% { opacity: 0.85; }
+  60% { opacity: 1; }
+  70% { opacity: 0.9; }
+}
+
+@media (max-width: 768px) {
+  .texture-wood { animation: none; }
+  .flame-1, .flame-2, .flame-3 { animation-name: flame-flicker-lite; }
+  .lantern-container { animation: none; box-shadow: 0 0 20px rgba(192, 86, 33, 0.25); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .texture-wood, .flame-1, .flame-2, .flame-3, .lantern-container { animation: none; }
+}
+
 /* Custom Utilities */
 .text-shadow-wood { text-shadow: 3px 3px 0px rgba(0,0,0,0.5); }
 .animate-in { animation: fade-in-up 0.8s ease-out forwards; }
